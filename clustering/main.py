@@ -102,10 +102,10 @@ if __name__ == '__main__':
         clip_model = load(clip_model_path) if os.path.exists(clip_model_path) else run_clip(path, path_bad_pics)
 
         # got results of blip model
-        # file.write("Getting texts")
-        # blip_model_path = 'saved_models/modelBLIP.joblib'
-        # blip_model = load(blip_model_path) if os.path.exists(blip_model_path) else run_blip('data/pictures/')
-        # texts = blip_model.texts
+        file.write("Getting texts")
+        blip_model_path = 'saved_models/modelBLIP.joblib'
+        blip_model = load(blip_model_path) if os.path.exists(blip_model_path) else run_blip('data/pictures/')
+        texts = blip_model.texts
 
         arr_embs = clip_model.arr_embs
         dict_embs = clip_model.embeddings
@@ -126,6 +126,6 @@ if __name__ == '__main__':
         labels = dbscan_labels if (dbscan_score > kmeans_score) else kmeans_labels
         np.savez('result/labels.npz', *labels)
         np.savez('result/embeddings.npz', *arr_embs)
-        # np.savez('result/texts.npz', *texts)
+        np.savez('result/texts.npz', *texts)
 
         zip_folder('result', 'result.zip')

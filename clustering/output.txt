@@ -1,0 +1,8 @@
+Getting embs
+Cleaning data
+run DBSCAN
+Model DBSCAN
+Silhouette score: 0
+run K-Means
+Model K-Means: 
+Silhouette score: 0.2676573

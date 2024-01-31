@@ -124,6 +124,7 @@ if __name__ == '__main__':
         kmeans_score, kmeans_labels = kmeans(arr_embs, similarity)
 
         labels = dbscan_labels if (dbscan_score > kmeans_score) else kmeans_labels
+
         np.savez('result/labels.npz', *labels)
         np.savez('result/embeddings.npz', *arr_embs)
         np.savez('result/texts.npz', *texts)

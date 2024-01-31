@@ -86,6 +86,14 @@ def zip_folder(folder_path, output_name):
                     zipf.write(file_path, os.path.relpath(file_path, folder_path))
 
 
+def check_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f'Директория {path} создана')
+    else:
+        print(f'Директория {path} уже существует')
+
+
 if __name__ == '__main__':
     path = 'data/pictures/'
     path_bad_pics = 'data/badPictures/'
@@ -93,6 +101,11 @@ if __name__ == '__main__':
     file_count = len(glob.glob(path + '/*'))
     image_paths = [os.path.join(path, file) for file in os.listdir(path) if
                    file.endswith(('.jpg', '.png', '.jpeg', '.bmp'))]
+
+    path_models = 'saved_models'
+    check_directory(path_models)
+    path_result = 'result'
+    check_directory(path_result)
 
     with open('output.txt', 'w') as file:
         # got results of clip model
@@ -102,10 +115,11 @@ if __name__ == '__main__':
         clip_model = load(clip_model_path) if os.path.exists(clip_model_path) else run_clip(path, path_bad_pics)
 
         # got results of blip model
-        file.write("Getting texts")
-        blip_model_path = 'saved_models/modelBLIP.joblib'
-        blip_model = load(blip_model_path) if os.path.exists(blip_model_path) else run_blip('data/pictures/')
-        texts = blip_model.texts
+        # file.write("Getting texts")
+        # blip_model_path = 'saved_models/modelBLIP.joblib'
+        # blip_model = load(blip_model_path) if os.path.exists(blip_model_path) else run_blip('data/pictures/')
+        # texts = blip_model.texts
+        # np.savez('result/texts.npz', *texts)
 
         arr_embs = clip_model.arr_embs
         dict_embs = clip_model.embeddings
@@ -127,6 +141,5 @@ if __name__ == '__main__':
 
         np.savez('result/labels.npz', *labels)
         np.savez('result/embeddings.npz', *arr_embs)
-        np.savez('result/texts.npz', *texts)
 
         zip_folder('result', 'result.zip')
